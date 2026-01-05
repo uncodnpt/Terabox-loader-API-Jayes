@@ -1,5 +1,5 @@
 {
-  "name": "Terabox-Downloader-API-bizft",
+  "name": "Terabox-loader-API-Jayes",
   "version": "1.0.0",
   "description": "A Cloudflare Worker that extracts and proxies Terabox download links.",
   "main": "src/worker.js",
@@ -7,7 +7,7 @@
     "dev": "wrangler dev",
     "deploy": "wrangler deploy"
   },
-  "author": "BIZ FACTORY",
+  "author": "Jayes",
   "license": "MIT",
   "devDependencies": {
     "wrangler": "^3.0.0"
