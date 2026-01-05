@@ -30,7 +30,7 @@ A lightweight Cloudflare Worker that extracts direct download links from Terabox
 
 #### Option A: Using Wrangler (Recommended)
 
-```bash
+
 npm install -g wrangler
 git clone https://github.com/YOUR_USERNAME/Terabox-loader-API-Jayes
 cd Terabox-loader-API-Jayes
