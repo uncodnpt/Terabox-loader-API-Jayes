@@ -1,9 +1,8 @@
-
-# 📁 Terabox Video Downloader API by Telegram: @bizft — Cloudflare Worker
+# 📁 Terabox Video Downloader API by Telegram: @UNCODNPT — Cloudflare Worker
 
 A lightweight Cloudflare Worker that extracts direct download links from Terabox (formerly Dubox) shared URLs and serves them via a proxy endpoint for seamless playback or download.
 
-**Made By [BIZ FACTORY](https://t.me/bizft)** 🚀
+**Made By Jayes | Telegram: [@UNCODNPT](https://t.me/UNCODNPT)** 🚀
 
 ---
 
@@ -21,139 +20,123 @@ A lightweight Cloudflare Worker that extracts direct download links from Terabox
 
 ### 1. **Get Your Terabox Cookie**
 
-1. Log in to [Terabox](https://www.terabox.com) in your browser.
+1. Log in to https://www.terabox.com in your browser.
 2. Open DevTools (`F12`) → **Application** → **Cookies** → `https://www.terabox.com`.
-3. Copy the full **Cookie** string (contains `Nus=` etc.).
+3. Copy the full **Cookie** string (contains `NDUS=` etc.).
+
+---
 
 ### 2. **Deploy to Cloudflare Workers**
 
 #### Option A: Using Wrangler (Recommended)
 
-1. Install [Wrangler CLI](https://developers.cloudflare.com/workers/wrangler/):
-   ```bash
-   npm install -g wrangler
-   ```
+```bash
+npm install -g wrangler
+git clone https://github.com/YOUR_USERNAME/Terabox-loader-API-Jayes
+cd Terabox-loader-API-Jayes
+npm install
+wrangler secret put TERABOX_COOKIE
+wrangler deploy
 
-2. Clone or create a new Worker project:
-   ```bash
-   wrangler init terabox-downloader
-   cd Terabox-Downloader-API-bizft
-   ```
-
-3. Replace `src/worker.js` with the provided code.
-
-4. Set your cookie as a **secret** (never hardcode it!):
-   ```bash
-   wrangler secret put ENTE_YOUR_TERABOX_COOKIES
-   ```
-   → Paste your full Terabox cookie when prompted.
-
-5. Deploy:
-   ```bash
-   wrangler deploy
-   ```
-
-#### Option B: Cloudflare Dashboard
-
-1. Go to [Cloudflare Dashboard → Workers](https://dash.cloudflare.com/?to=/:account/workers).
-2. Create a new Worker.
-3. Paste the code into the editor.
-4. **Replace** this line:
-   ```js
-   const COOKIE = "ENTE_YOUR_TERABOX_COOKIES"
-   ```
-   with your actual cookie **OR** (better) use environment variables:
-   - In the Worker settings → **Environment variables** → **Secrets**
-   - Add a secret named `TERABOX_COOKIE` with your cookie value.
-   - Then update the code to:
-     ```js
-     const COOKIE = env.TERABOX_COOKIE; // if using env
-     ```
-     *(Note: You’ll need to pass `env` into the `fetch` handler — see Wrangler docs for module syntax.)*
 
 ---
 
-## 📡 API Endpoints
+Option B: Cloudflare Dashboard
 
-### 🔗 POST `/` — Get File Info
+1. Cloudflare Dashboard → Workers
 
-**Request:**
-```json
+
+2. Create New Worker
+
+
+3. Paste src/worker.js
+
+
+4. Settings → Environment Variables → Secrets
+
+
+5. Add:
+
+Name: TERABOX_COOKIE
+
+Value: Your Terabox cookie
+
+
+
+
+
+---
+
+📡 API Endpoints
+
+🔗 POST / — Get File Info
+
 {
   "link": "https://terabox.com/s/your-share-link"
 }
-```
 
-**Response:**
-```json
 {
   "file_name": "example.mp4",
   "file_size": "1.25 GB",
   "size_bytes": 1342177280,
   "thumbnail": "https://.../thumb.jpg",
   "download_link": "https://.../file.mp4?auth=...",
-  "proxy_url": "https://your-worker.your-subdomain.workers.dev/proxy?url=...&file_name=example.mp4"
+  "proxy_url": "https://your-worker.workers.dev/proxy?url=...&file_name=example.mp4"
 }
-```
 
-> ✅ Use `proxy_url` in your frontend for direct playback/download without CORS issues.
 
 ---
 
-### 🌐 GET `/proxy` — Stream/Download File
+🌐 GET /proxy — Stream / Download
 
-**Query Params:**
-- `url` *(required)*: The direct Terabox download link (`dlink`)
-- `file_name` *(optional)*: Filename for `Content-Disposition`
-
-**Example:**
-```
 GET /proxy?url=https://.../file.mp4&file_name=my_video.mp4
-```
 
-> Supports **byte-range requests** → works with `<video>` tags and download managers.
+Supports range requests.
 
----
-
-## 🛡️ Security Notes
-
-- Your Terabox cookie grants full access to your account. **Treat it like a password.**
-- Never expose the raw `dlink` publicly — always use the `/proxy` endpoint.
-- The Worker includes CORS headers for safe cross-origin usage.
 
 ---
 
-## 🧪 Example Usage (Frontend)
+🛡️ Security Notes
 
-```html
-<video controls src="https://your-worker.proxy/proxy?url=ENCODED_DLINK&file_name=video.mp4"></video>
-```
+Terabox cookie = full account access.
 
-Or fetch file info:
-```js
-const res = await fetch('https://your-worker.proxy', {
+Treat it like a password.
+
+Never expose raw download links.
+
+Always use /proxy.
+
+
+
+---
+
+🧪 Example Usage
+
+<video controls src="https://your-worker.workers.dev/proxy?url=ENCODED_DLINK&file_name=video.mp4"></video>
+
+const res = await fetch('https://your-worker.workers.dev', {
   method: 'POST',
   headers: { 'Content-Type': 'application/json' },
   body: JSON.stringify({ link: 'https://terabox.com/s/abc123' })
 });
 const data = await res.json();
-console.log(data.proxy_url); // Use this for download/playback
-```
+console.log(data.proxy_url);
+
 
 ---
 
-## ❓ Troubleshooting
+❓ Troubleshooting
 
-| Issue | Solution |
-|------|--------|
-| `Invalid link` | Ensure the Terabox link is public and valid |
-| `Failed to extract tokens` | Cookie may be expired — re-login and update it |
-| Video won’t seek | Ensure your player supports range requests (most do) |
-| 403 Forbidden | Terabox may block non-browser User-Agents — try updating `User-Agent` |
+Issue	Fix
+
+Invalid link	Ensure link is public
+Token error	Update cookie
+Video not seeking	Player must support range
+403 error	Update User-Agent
+
+
 
 ---
 
-**✨ Developed with ❤️ by [BIZ FACTORY](https://t.me/bizft)**  
-*Your go-to source for smart tools, automation scripts, and cloud-native solutions.*  
-
-🔔 *Stay updated — Join our Telegram channel for the latest releases, tips, and exclusive utilities!*  
+✨ Developed by Jayes
+📢 Telegram Channel: https://t.me/UNCODNPT
