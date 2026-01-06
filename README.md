@@ -1,44 +1,43 @@
 # 📁 Terabox Video Downloader API — Cloudflare Worker
 
-Telegram Channel: **@UNCODNPT**
+Telegram Channel: **@UNCODNPT**  
 
 A lightweight Cloudflare Worker that extracts direct download links from Terabox (formerly Dubox) shared URLs and serves them via a proxy endpoint for seamless streaming or downloading.
 
-**Developed By: Jayes**
+**Developed By:** Jayes
 
 ---
 
 ## 🚀 Features
 
-- Extract file info (name, size, thumbnail, direct download link)
-- Proxy downloads via your own Worker domain
-- Supports **Range Requests** (video seeking supported)
-- CORS enabled (usable with frontend / Telegram bots)
-- Cookie rotation support (anti-limit)
+- Extract file info: name, size, thumbnail, direct download link  
+- Proxy downloads via your own Worker domain  
+- Supports **Range Requests** (video seeking supported)  
+- CORS enabled (usable with frontend / Telegram bots)  
+- Cookie rotation support for stability and anti-limit
 
 ---
 
-## 🛠️ Setup Guide
+## 🛠️ Setup / Installation
 
 ### 1️⃣ Get Terabox Cookie
 
-1. Login to https://www.terabox.com  
-2. Open DevTools (`F12`)
-3. Application → Cookies → `https://www.terabox.com`
-4. Copy full cookie string (must contain `ndus=`)
+1. Log in to [Terabox](https://www.terabox.com)  
+2. Open DevTools (`F12`) → Application → Cookies → `https://www.terabox.com`  
+3. Copy the full cookie string (must contain `ndus=`)
 
 ---
 
 ### 2️⃣ Deploy on Cloudflare Workers (Wrangler)
 
-
+```
 npm install -g wrangler
-git clone https://github.com/YOUR_USERNAME/Terabox-loader-API-Jayes
+git clone https://github.com/uncodnpt/Terabox-loader-API-Jayes
 cd Terabox-loader-API-Jayes
 npm install
 wrangler deploy
-
-If using single cookie, set secret:
+```
+Optional: If using a single cookie instead of rotation:
 
 wrangler secret put TERABOX_COOKIE
 
@@ -49,11 +48,13 @@ wrangler secret put TERABOX_COOKIE
 
 🔹 POST / — Get File Info
 
+Request:
+
 {
   "link": "https://terabox.com/s/xxxx"
 }
 
-Response
+Response:
 
 {
   "file_name": "video.mp4",
@@ -71,8 +72,8 @@ Response
 
 /proxy?url=ENCODED_DLINK&file_name=video.mp4
 
-✔ Supports video streaming
-✔ Download managers supported
+✔ Supports streaming in <video> tags
+✔ Works with download managers
 
 
 ---
@@ -92,28 +93,15 @@ fetch("https://your-worker.workers.dev", {
 
 ---
 
-🛡️ Security Notes
+❓ Troubleshooting / Common Errors
 
-Never expose raw Terabox cookies
+Invalid link: Make sure the Terabox link is public
 
-Treat cookie like a password
+Token extraction failed: Cookie may be expired — get a new cookie
 
-Always use /proxy endpoint
+403 Forbidden: Try rotating the cookie
 
-Cookie expiry = regenerate cookie
-
-
-
----
-
-❓ Common Errors
-
-Error	Fix
-
-Invalid link	Link must be public
-Token error	Cookie expired
-403 error	Rotate cookie
-Video not seeking	Player must support range
+Video not seeking: Ensure the player supports range requests
 
 
 
@@ -123,3 +111,12 @@ Video not seeking	Player must support range
 
 MIT License
 © 2025 Jayes — Telegram: @UNCODNPT
+
+
+---
+
+📬 Contact / Support
+
+For updates, support, and announcements, join our Telegram channel: @UNCODNPT
+
+Enjoy using the API!
