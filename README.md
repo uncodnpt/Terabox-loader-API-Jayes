@@ -49,13 +49,13 @@ wrangler secret put TERABOX_COOKIE
 🔹 POST / — Get File Info
 
 Request:
-
+```
 {
   "link": "https://terabox.com/s/xxxx"
 }
-
+```
 Response:
-
+```
 {
   "file_name": "video.mp4",
   "file_size": "1.20 GB",
@@ -65,13 +65,13 @@ Response:
   "proxy_url": "https://your-worker.workers.dev/proxy?url=..."
 }
 
-
+```
 ---
 
 🔹 GET /proxy — Stream / Download
-
+``
 /proxy?url=ENCODED_DLINK&file_name=video.mp4
-
+``
 ✔ Supports streaming in <video> tags
 ✔ Works with download managers
 
@@ -79,7 +79,7 @@ Response:
 ---
 
 🧪 Example Frontend Usage
-
+```
 <video controls src="https://your-worker.workers.dev/proxy?url=ENCODED_DLINK&file_name=video.mp4"></video>
 
 fetch("https://your-worker.workers.dev", {
@@ -90,7 +90,7 @@ fetch("https://your-worker.workers.dev", {
 .then(r => r.json())
 .then(d => console.log(d.proxy_url));
 
-
+```
 ---
 
 ❓ Troubleshooting / Common Errors
